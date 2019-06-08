@@ -72,7 +72,14 @@
 		}
 			
 	%>
-	
+	<%
+		String param2 = request.getParameter("mail");
+		if (param2 != null && !param2.equals(null)) {
+			if (param2.equals("sent")) {%>
+				<script>alert('E-mail sent to users!');</script><%
+			}
+		}
+		%>
 				
 			<%
 				String[] allUsers = null;
