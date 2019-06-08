@@ -71,6 +71,7 @@ public class Connexion extends HttpServlet {
 							nom = allUsers[i].split("\"")[5];
 							System.out.println(nom);
 							session.setAttribute("name", nom);
+							session.setAttribute("telephone", tel);
 							res.sendRedirect("admin.jsp");
 						}
 					}
