@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="java.io.FileReader"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.io.BufferedReader"%>
@@ -293,49 +294,44 @@
 			
 			<div class="container-fluid" style="width: 100%; height: auto,; margin: 0px; margin-bottom: 0px; background-color: #34495e;">
 				<h1 style="color: white; margin-left: 160px; line-height: 120px; text-shadow: 1px 1px 1px rgba(0,0,0,.4); font-family: 'Calibri';">ToDo List</h1>
-				 <form method=POST action=ToDoList?=add style="width:75%;margin: 0 auto;">
+				 <form method=POST action=ToDoList?addTask=ok style="width:75%;margin: 0 auto;">
 				 	<div class="form-group">
     				<label for="mail" style="color: white;">Add a new task</label>
     				<input type=text class="form-control" name=task id="exampleFormControlTextarea1"/>
   					</div>
   					<button type="submit" class="btn btn-light mb-2">Add</button>
 				</form>
-				<div class="row" style="margin-left: 160px;">
+				<div class="row" style="margin-left: 160px; margin-right: 100px;">
 				<%
-					BufferedReader br = new BufferedReader(new FileReader("../tasks"));
+					BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Arnaud\\git\\repository\\uNowAdmin\\WebContent\\tasks.txt"));
 					try {
 				    	StringBuilder sb = new StringBuilder();
 				    	String line = br.readLine();
-
+						int i = 0;
 				    	while (line != null) {
+				    		i = i + 1;
+				    		String sentence = "";
+				    		sentence = line;
 				        	sb.append(line);
 				        	sb.append(System.lineSeparator());
 				        	line = br.readLine();
-				        	System.out.println(sb.toString());
+				        	%>
+				        	<div class="col-lg-4">
+								<form method=POST action=ToDoList?remove=<%= i %> style="width:75%;margin: 0 auto;">
+					 			<div class="form-group">
+	    						<p style="color: white; font-size: 20px; font-family: 'Calibri'; text-align: center;"><%= sentence %></p>
+	    						<input type=text class="form-control" name=<%= i %> id="exampleFormControlTextarea1" style="display: none;"/>
+	  							</div>
+	  							<center><button type="submit" class="btn btn-light mb-2">Done</button></center>
+								</form>
+							</div>
+				        	<%
 				    	}	
-				    	System.out.println(sb.toString());
 					} finally {
 				    	br.close();
 					}
 				%>
-					<div class="col-lg-3">
-					<form method=POST action=ToDoList?=remove style="width:75%;margin: 0 auto;">
-					 	<div class="form-group">
-	    				<p>Task1</p>
-	    				<input type=text class="form-control" name=1 id="exampleFormControlTextarea1" style="display: none;"/>
-	  					</div>
-	  					<button type="submit" class="btn btn-light mb-2">Done</button>
-					</form>
-					</div>
-					<div class="col-lg-3">
-					<form method=POST action=ToDoList?=remove style="width:75%;margin: 0 auto;">
-					 	<div class="form-group">
-	    				<p>Task2</p>
-	    				<input type=text class="form-control" name=2 id="exampleFormControlTextarea1" style="display: none;"/>
-	  					</div>
-	  					<button type="submit" class="btn btn-light mb-2">Done</button>
-					</form>
-					</div>
+
 				</div>
 			</div>
 		
