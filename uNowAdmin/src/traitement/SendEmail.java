@@ -1,6 +1,13 @@
 package traitement;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,32 +67,67 @@ public class SendEmail extends HttpServlet {
     	}
     }
 	
-	public void sendAnEmail(String email) {
-		// Recupérer tous les e-mails des utilisateurs
-		 Email from = new Email("noreply@uNow.com");
-		 String subject = "There are some news on uNow !!";
-		 Email to = new Email("arnaudbcp@gmail.com");
-		 Content content = new Content("text/plain", email);
-		 Mail mail = new Mail(from, subject, to, content);
-
-		 SendGrid sg = new SendGrid(SENDGRID_API_KEY);
-		 Request request = new Request();
-		    try {
-		      request.setMethod(Method.POST);
-		      request.setEndpoint("mail/send");
-		      request.setBody(mail.build());
-		      Response response = sg.api(request);
-		      System.out.println(response.getStatusCode());
-		      System.out.println(response.getBody());
-		      System.out.println(response.getHeaders());
-		    } catch (IOException ex) {
-		      try {
-				throw ex;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public void sendAnEmail(String email) throws IOException {
+		String[] allUsers = null;
+		String[] allEmails = null;
+		int cptUser = 0;
+		URL url = new URL("https://unow-api.herokuapp.com/user/");
+		HttpURLConnection connection = null;
+		connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("GET");
+		int responseRequest = connection.getResponseCode();
+		System.out.println("Reponse code = " + responseRequest);
+		if (responseRequest == HttpURLConnection.HTTP_OK) {
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					connection.getInputStream()));
+			String inputLine;
+			StringBuffer r = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				r.append(inputLine);
 			}
-		    }
+			in.close();
+			allUsers = r.toString().split("[{}]");
+			int j = 0;
+			for(int i = 0; i < allUsers.length; i++) {
+				if(i%2 != 0) {
+					cptUser = cptUser + 1;
+					
+				}
+			}
+			allEmails = new String[cptUser];
+			for(int i = 0; i < allUsers.length; i++) {
+				if(i%2 != 0) {
+					allEmails[j] = allUsers[i].split("\"")[13];
+					j++;
+				}
+			}
+		}
+		for(int i = 0; i < allEmails.length; i++) {
+			 Email from = new Email(allEmails[i]);
+			 String subject = "There are some news on uNow !!";
+			 Email to = new Email("arnaudbcp@gmail.com");
+			 Content content = new Content("text/plain", email);
+			 Mail mail = new Mail(from, subject, to, content);
+	
+			 SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+			 Request request = new Request();
+			 try {
+			      request.setMethod(Method.POST);
+			      request.setEndpoint("mail/send");
+			      request.setBody(mail.build());
+			      Response response = sg.api(request);
+			      System.out.println(response.getStatusCode());
+			      System.out.println(response.getBody());
+			      System.out.println(response.getHeaders());
+			 } catch (IOException ex) {
+			    	try {
+			    		throw ex;
+			    	} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			    	}	
+			 }
+		}
 	}
 
 }
