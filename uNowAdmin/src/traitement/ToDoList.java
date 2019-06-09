@@ -55,7 +55,7 @@ public class ToDoList extends HttpServlet {
     		if(req.getParameter("addTask") != null && req.getParameter("addTask").equals("ok")) {
     			try(PrintWriter output = new PrintWriter(new FileWriter(FILE_PATH,true))) 
     			{
-    			    output.printf(System.lineSeparator(), req.getParameter("task"));
+    			    output.printf(System.lineSeparator() +"%s", req.getParameter("task"));
     			} 
     			catch (Exception e) {}	
     		}else {
