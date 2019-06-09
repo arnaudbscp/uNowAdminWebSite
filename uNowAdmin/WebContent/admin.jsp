@@ -1,3 +1,4 @@
+<%@page import="java.io.FileReader"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.io.BufferedReader"%>
 <%@page import="java.net.HttpURLConnection"%>
@@ -58,7 +59,7 @@
 	</div><%
 	}else {
 		%>
-			<nav class="navbar fixed-top navbar-light" style="background-color: #1b5873; color: #ecedf1; height: 60px;">
+			<nav class="navbar fixed-top navbar-light" style="background-color: #1b5873; color: #ecedf1; height: 60px; border-bottom: 3px solid rgba(0,0,0,.6);">
   				<p class="navbar-brand" style="color: #ecedf1;">Hello <%= id %>!</p>
   				<a style="color: #ecedf1;margin-top:-10px;" href="?deconnexion=ok">Sign out</a>
 			</nav>
@@ -288,6 +289,54 @@
   					</div>
   					<button type="submit" class="btn btn-light mb-2">Send e-mail to all</button>
 				</form>
+			</div>
+			
+			<div class="container-fluid" style="width: 100%; height: auto,; margin: 0px; margin-bottom: 0px; background-color: #34495e;">
+				<h1 style="color: white; margin-left: 160px; line-height: 120px; text-shadow: 1px 1px 1px rgba(0,0,0,.4); font-family: 'Calibri';">ToDo List</h1>
+				 <form method=POST action=ToDoList?=add style="width:75%;margin: 0 auto;">
+				 	<div class="form-group">
+    				<label for="mail" style="color: white;">Add a new task</label>
+    				<input type=text class="form-control" name=task id="exampleFormControlTextarea1"/>
+  					</div>
+  					<button type="submit" class="btn btn-light mb-2">Add</button>
+				</form>
+				<div class="row" style="margin-left: 160px;">
+				<%
+					BufferedReader br = new BufferedReader(new FileReader("../tasks"));
+					try {
+				    	StringBuilder sb = new StringBuilder();
+				    	String line = br.readLine();
+
+				    	while (line != null) {
+				        	sb.append(line);
+				        	sb.append(System.lineSeparator());
+				        	line = br.readLine();
+				        	System.out.println(sb.toString());
+				    	}	
+				    	System.out.println(sb.toString());
+					} finally {
+				    	br.close();
+					}
+				%>
+					<div class="col-lg-3">
+					<form method=POST action=ToDoList?=remove style="width:75%;margin: 0 auto;">
+					 	<div class="form-group">
+	    				<p>Task1</p>
+	    				<input type=text class="form-control" name=1 id="exampleFormControlTextarea1" style="display: none;"/>
+	  					</div>
+	  					<button type="submit" class="btn btn-light mb-2">Done</button>
+					</form>
+					</div>
+					<div class="col-lg-3">
+					<form method=POST action=ToDoList?=remove style="width:75%;margin: 0 auto;">
+					 	<div class="form-group">
+	    				<p>Task2</p>
+	    				<input type=text class="form-control" name=2 id="exampleFormControlTextarea1" style="display: none;"/>
+	  					</div>
+	  					<button type="submit" class="btn btn-light mb-2">Done</button>
+					</form>
+					</div>
+				</div>
 			</div>
 		
 		<%
