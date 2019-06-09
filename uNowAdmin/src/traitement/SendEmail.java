@@ -103,9 +103,9 @@ public class SendEmail extends HttpServlet {
 			}
 		}
 		for(int i = 0; i < allEmails.length; i++) {
-			 Email from = new Email(allEmails[i]);
-			 String subject = "There are some news on uNow !!";
-			 Email to = new Email("arnaudbcp@gmail.com");
+			 Email from = new Email("noreply@unow.com");
+			 String subject = "There are some news on uNow!!";
+			 Email to = new Email(allEmails[i]);
 			 Content content = new Content("text/plain", email);
 			 Mail mail = new Mail(from, subject, to, content);
 	
