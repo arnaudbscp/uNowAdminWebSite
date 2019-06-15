@@ -174,7 +174,8 @@
 					for(int i = 1; i < allActivities.length; i++) {
 						if(i%4 == 0) {
 							cptActivities = cptActivities + 1;
-							cptLikes += Integer.parseInt(allActivities[i-1].split("\"")[14].replace(':', '0'));
+							String tmp = allActivities[i-1].split("\"")[14].replace(':', '0');
+							cptLikes += Integer.parseInt(tmp.substring(0, tmp.length()-1));
 						}
 							
 					}
