@@ -316,7 +316,9 @@
 				        	sb.append(line);
 				        	sb.append(System.lineSeparator());
 				        	line = br.readLine();
+				        	if(!sentence.equals(" ") && !sentence.equals(null) && !sentence.equals("") && !sentence.equals("\n")) {
 				        	%>
+				    
 				        	<div class="col-lg-4">
 								<form method=POST action=ToDoList?remove=<%= i %> style="width:75%;margin: 0 auto;">
 					 			<div class="form-group">
@@ -327,6 +329,7 @@
 								</form>
 							</div>
 				        	<%
+				    		}
 				    	}	
 					} finally {
 				    	br.close();
